@@ -118,6 +118,9 @@ int main()
     // all printable symbols
     // !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 
+    // some non-printable symbols
+    // € ‰ œ ® © µ ¤ ¥ § ¼ ½ ¾ æ Ø • ™ ª¿ × ð¦ « ° … ‡† » ♔
+    
     // testing with doctest
     doctest::Context().run();
 
