@@ -13,7 +13,7 @@ void Regime::compressRegime(){
     while(i){
         char c;
         i.get(c);
-        if(c != char(10)){
+        if(c != '\n'){
             line1.push_back(c);
         }
     }
