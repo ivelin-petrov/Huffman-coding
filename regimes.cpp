@@ -2,35 +2,39 @@
 
 void Regime::compressRegime(){
     std::cout << "Enter the name of input file." << std::endl;
-    std::string input, output;
+    std::string input, output; // file names
     std::cin.ignore();
 
     std::getline(std::cin, input);
     std::ifstream i(input);
-    input.clear();
+
+    std::string line1, line2;
 
     while(i){
-        std::string tmp;
-        std::getline(i, tmp);
-
-        input += tmp;
+        char c;
+        i.get(c);
+        if(c != char(10)){
+            line1.push_back(c);
+        }
     }
+
+    line1.pop_back();
 
     if(input.empty()){
         std::cout << "Insufficient data from input file." << std::endl;
     }else{
-        HuffmanTree tree(input);
+        HuffmanTree tree(line1);
 
         std::cout << "Enter the name of the output file." << std::endl;
         std::getline(std::cin, output);
         std::ofstream o(output);
 
-        output = tree.compress(input);
+        line2 = tree.compress(line1);
 
         o << tree.serialize() << '\n';
-        o << output;
+        o << line2;
 
-        tree.degreeOfCompression(input, output);
+        tree.degreeOfCompression(line1, line2);
     }
 }
 
