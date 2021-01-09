@@ -10,37 +10,41 @@ void Regime::compressRegime(){
 
     std::string line1, line2;
 
-    while(i){
-        char c;
-        i.get(c);
-        if(c != '\n'){
-            line1.push_back(c);
-        }
-    }
-
-    line1.pop_back();
-
-    if(input.empty()){
-        std::cout << "Insufficient data from input file." << std::endl;
+    if(!i.is_open()){
+        std::cout << "Nonexistent file." << std::endl;
     }else{
-        HuffmanTree tree(line1);
+        while(i){
+            char c;
+            i.get(c);
+            if(c != '\n'){
+                line1.push_back(c);
+            }
+        }
 
-        std::cout << "Enter the name of the output file." << std::endl;
-        std::getline(std::cin, output);
-        std::ofstream o(output);
+        line1.pop_back();
 
-        line2 = tree.compress(line1);
+        if(line1.empty()){
+            std::cout << "Insufficient data from input file." << std::endl;
+        }else{
+            HuffmanTree tree(line1);
 
-        o << tree.serialize() << '\n';
-        o << line2;
+            std::cout << "Enter the name of the output file." << std::endl;
+            std::getline(std::cin, output);
+            std::ofstream o(output);
 
-        tree.degreeOfCompression(line1, line2);
+            line2 = tree.compress(line1);
+
+            o << tree.serialize() << '\n';
+            o << line2;
+
+            tree.degreeOfCompression(line1, line2);
+        }
     }
 }
 
 void Regime::decompressRegime(){
     std::cout << "Enter the name of input file." << std::endl;
-    std::string input, output;
+    std::string input, output; // file names
     std::cin.ignore();
     std::getline(std::cin, input);
     std::ifstream i(input);
@@ -49,31 +53,36 @@ void Regime::decompressRegime(){
     std::getline(i, line1);
     std::getline(i, line2);
 
-    if(line1.empty() || line2.empty()){
-        std::cout << "Insufficient data from input file." << std::endl;
+
+    if(!i.is_open()){
+        std::cout << "Nonexistent file." << std::endl;
     }else{
-        std::cout << "Enter 'a' for a[lternative] decompress regime (debug regime)." << std::endl;
-        std::cout << "Enter 'n' for n[ormal] decompress regime in an output file." << std::endl;
-        char choice;
-        std::cin >> choice;
-
-        if(choice == 'a'){
-            size_t index = 0;
-            HuffmanTree tree(line1, index);
-
-            std::cout << tree.debug(line2) << std::endl;
-        }else if(choice == 'n'){
-            std::cout << "Enter the name of the output file." << std::endl;
-            std::cin.ignore();
-            std::getline(std::cin, output);
-            std::ofstream o(output);
-
-            size_t index = 0;
-            HuffmanTree tree(line1, index);
-            
-            o << tree.decompress(line2);
+        if(line1.empty() || line2.empty()){
+            std::cout << "Insufficient data from input file." << std::endl;
         }else{
-            std::cout << "Unknown command entered." << std::endl;
+            std::cout << "Enter 'a' for a[lternative] decompress regime (debug regime)." << std::endl;
+            std::cout << "Enter 'n' for n[ormal] decompress regime in an output file." << std::endl;
+            char choice;
+            std::cin >> choice;
+
+            if(choice == 'a'){
+                size_t index = 0;
+                HuffmanTree tree(line1, index);
+
+                std::cout << tree.debug(line2) << std::endl;
+            }else if(choice == 'n'){
+                std::cout << "Enter the name of the output file." << std::endl;
+                std::cin.ignore();
+                std::getline(std::cin, output);
+                std::ofstream o(output);
+
+                size_t index = 0;
+                HuffmanTree tree(line1, index);
+                
+                o << tree.decompress(line2);
+            }else{
+                std::cout << "Unknown command entered." << std::endl;
+            }
         }
     }
 }
